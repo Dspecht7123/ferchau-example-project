@@ -77,7 +77,7 @@ public class MainSystem
             Random random = new Random();
             while (true)
             {
-                int randomSeconds = random.Next(5);
+                int randomSeconds = random.Next(3, 5);
                 Thread.Sleep(new TimeSpan(0, 0, randomSeconds));
 
                 if (this.ProductionSite != null && this.EmptyPlaceSensor == false)
@@ -95,7 +95,7 @@ public class MainSystem
             Random random = new Random();
             while (true)
             {
-                int randomSeconds = random.Next(5);
+                int randomSeconds = random.Next(3, 5);
                 Thread.Sleep(new TimeSpan(0, 0, randomSeconds));
 
                 if (this.ProductionSite != null && this.FullPlaceSensor == true)
@@ -109,6 +109,5 @@ public class MainSystem
 
         emptyPlaceThread.Join();
         fullPlaceThread.Join();
-
     }
 }
