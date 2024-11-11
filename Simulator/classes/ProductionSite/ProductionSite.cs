@@ -2,16 +2,20 @@ public class ProductionSite
 {
     private List<Machine> Machines;
     const int MachineNotFoundPollingLoopDelayInSeconds = 2;
+    private MainSystem MainSystem;
 
-
-    public ProductionSite(List<Machine> machines)
+    public ProductionSite(List<Machine> machines, MainSystem mainSystem)
     {
         this.Machines = machines;
+        this.MainSystem = mainSystem;
+
+        //initialize polling loop which looks for finished mashines
+        this.MoveObjectFromFinishedMachineToFullPlace();
     }
 
     public void onEmptyPlaceSensorChanged()
     {
-        if (getEmptyPlaceSensor())
+        if (this.MainSystem.EmptyPlaceSensor) //getEmptyPlaceSensor()
         {
             this.MoveObjectFromEmptyPlaceToIdleMachine();
         }
@@ -19,7 +23,7 @@ public class ProductionSite
 
     public void onFullPlaceSensorChanged()
     {
-        if (!getFullPlaceSensor())
+        if (!this.MainSystem.FullPlaceSensor) //!getFullPlaceSensor()
         {
             this.MoveObjectFromFinishedMachineToFullPlace();
         }
@@ -40,7 +44,10 @@ public class ProductionSite
             else
             {
                 idleMachineFound = true;
-                setEmptyPlaceSensor(false);
+
+                this.MainSystem.EmptyPlaceSensor = false;//setEmptyPlaceSensor(false);
+                Console.WriteLine($"Empty Object moved from Empty Place to Machine with Id {idleMachine.Id}");
+
                 idleMachine.Start();
             }
         }
@@ -61,7 +68,10 @@ public class ProductionSite
             else
             {
                 finishedMachineFound = true;
-                setFullPlaceSensor(true);
+
+                this.MainSystem.FullPlaceSensor = true;//setFullPlaceSensor(true);
+                Console.WriteLine($"Full Object moved from Machine with Id {finishedMachine.Id} to Full Place");
+
                 finishedMachine.Reset();
             }
         }

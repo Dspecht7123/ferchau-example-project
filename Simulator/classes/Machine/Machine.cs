@@ -1,6 +1,7 @@
 public class Machine
 {
-    private int Id;
+    private int _id;
+    public int Id {get; private set;}
     private TimeSpan CycleTime;
     public MachineStates MachineState { get; private set; }
 
@@ -25,6 +26,7 @@ public class Machine
     public void Reset()
     {
         this.MachineState = MachineStates.Idle;
+        Console.WriteLine($"Machine with Id {this.Id} switched to state Idle");
     }
 
 }
